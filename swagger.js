@@ -8,8 +8,8 @@ const host =
 
 const doc = {
   info: {
-    title: 'Contacts API',
-    description: 'API for managing contacts cse341 first project',
+    title: 'Library API',
+    description: 'API documentation for the Library application',
   },
   host: host,
   basePath: '/api/v1',
