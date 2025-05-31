@@ -10,7 +10,7 @@ function router(app) {
     require('./swagger.routes'),
     /* #swagger.ignore = true */
   );
-
+  appRouter.use('/auth', require('./auth.routes'));
   appRouter.use('/books', require('./book.routes'));
 }
 
