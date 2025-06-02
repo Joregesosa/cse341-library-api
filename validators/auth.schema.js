@@ -7,7 +7,6 @@ const userCreateSchema = Joi.object({
   phone: Joi.string().min(10).max(15).required(),
   address: Joi.string().min(5).max(100).required(),
   dateOfBirth: Joi.date().required(),
-  password: Joi.string().min(6).required(),
 });
 
 const userUpdateSchema = Joi.object({
@@ -17,7 +16,6 @@ const userUpdateSchema = Joi.object({
   phone: Joi.string().min(10).max(15),
   address: Joi.string().min(5).max(100),
   dateOfBirth: Joi.date(),
-  password: Joi.string().min(6),
 }).min(1);
 
 const validateUser = (req, res, next) => {
