@@ -11,6 +11,13 @@ const appConfig = {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
+  github: {
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL:
+      process.env.GITHUB_CALLBACK_URL ||
+      'http://localhost:3000/auth/github/callback',
+  },
 };
 
 module.exports = appConfig;
