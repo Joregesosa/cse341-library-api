@@ -25,8 +25,6 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
-      unique: true,
       trim: true,
       minlength: 10,
       maxlength: 15,
@@ -40,13 +38,11 @@ const userSchema = new mongoose.Schema(
     },
     dateOfBirth: {
       type: Date,
-      required: true,
     },
-    password: {
+    githubId: {
       type: String,
-      required: true,
-      minlength: 6,
-      select: false,
+      unique: true,
+      sparse: true,
     },
   },
   { timestamps: true },
