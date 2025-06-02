@@ -21,7 +21,7 @@ const isProfileComplete = (req, res, next) => {
     'dateOfBirth',
   ];
   const missingFields = requiredFields.filter(
-    (field) => !req.user[field] || req.user[field].trim() === '',
+    (field) => !req.user[field] || req.user[field] === '',
   );
 
   if (missingFields.length > 0) {
