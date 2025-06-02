@@ -12,7 +12,7 @@ const doc = {
     description: 'API documentation for the Library application',
   },
   host: host,
-  basePath: '/api/v1',
+  basePath: '/',
   schemes: ['http', 'https'],
 };
 
