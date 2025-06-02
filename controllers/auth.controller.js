@@ -1,21 +1,11 @@
 const User = require('../models/User');
-
-const index = async (req, res, next) => {
-  try {
-    // #swagger.tags = ['Users']
-    // #swagger.summary = 'Get all users'
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (error) {
-    next(error);
-  }
-};
+const passport = require('passport');
 
 const show = async (req, res, next) => {
   try {
-    // #swagger.tags = ['Users']
-    // #swagger.summary = 'Get a user by ID'
-    const { id } = req.params;
+    // #swagger.tags = ['Auth']
+    // #swagger.summary = 'Get the authenticated user profile'
+    const { id } = req.user;
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -26,55 +16,16 @@ const show = async (req, res, next) => {
   }
 };
 
-const create = async (req, res, next) => {
-  try {
-    // #swagger.tags = ['Users']
-    // #swagger.summary = 'Create a new user'
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      address,
-      dateOfBirth,
-      password,
-    } = req.body;
-
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      phone,
-      address,
-      dateOfBirth,
-      password,
-    });
-
-    await newUser.save();
-
-    res.status(201).json(newUser);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const update = async (req, res, next) => {
   try {
-    // #swagger.tags = ['Users']
-    // #swagger.summary = 'Update a user by ID'
-    const { id } = req.params;
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      address,
-      dateOfBirth,
-      password,
-    } = req.body;
+    // #swagger.tags = ['Auth']
+    // #swagger.summary = 'Update authenticated user profile'
+    const { _id } = req.user;
+    const { firstName, lastName, email, phone, address, dateOfBirth } =
+      req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
-      id,
+      _id,
       {
         firstName,
         lastName,
@@ -82,7 +33,6 @@ const update = async (req, res, next) => {
         phone,
         address,
         dateOfBirth,
-        password,
         updatedAt: Date.now(),
       },
       { new: true },
@@ -98,25 +48,46 @@ const update = async (req, res, next) => {
   }
 };
 
-const destroy = async (req, res, next) => {
+const githubLogin = passport.authenticate('github', { scope: ['user:email'] });
+
+const githubCallback = (req, res, next) => {
+  /* #swagger.ignore = true */
+  console.log('GitHub callback triggered');
+  passport.authenticate('github', {
+    successRedirect: '/api-docs',
+    failureRedirect: '/github/login',
+  })(req, res, next);
+  console.log('GitHub authentication completed');
+};
+
+const logout = (req, res, next) => {
   try {
-    // #swagger.tags = ['Users']
-    // #swagger.summary = 'Delete a user by ID'
-    const { id } = req.params;
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(204).send();
+    // #swagger.tags = ['Auth']
+    // #swagger.summary = 'Logout user'
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+
+      req.session.destroy((sessionErr) => {
+        if (sessionErr) {
+          return next(sessionErr);
+        }
+
+        // O responder con un mensaje JSON
+        res.clearCookie('connect.sid'); // Limpia la cookie de sesión
+        res.status(200).json({ message: 'Logged out successfully' });
+      });
+    });
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  index,
   show,
-  create,
   update,
-  destroy,
+  githubLogin,
+  githubCallback,
+  logout,
 };
