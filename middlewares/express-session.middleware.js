@@ -6,15 +6,13 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: appConfig.env === 'production', // Esto requiere HTTPS
-    httpOnly: true, // Añadir esta línea para seguridad
+    secure: appConfig.env === 'production', // Requiere HTTPS
+    httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'none', // Cambiar a 'none' para permitir cookies en redirecciones cross-origin
-    // domain: '.tudominio.com', // Descomentar y configurar en producción
+    sameSite: appConfig.env === 'production' ? 'none' : 'lax', // 'none' solo en producción
+    domain: appConfig.env === 'production' ? '.onrender.com' : undefined, // Ajusta según tu dominio
   },
+  proxy: appConfig.env === 'production', // Importante si estás detrás de un proxy
 });
-console.log(
-  'Env:',
-  appConfig.env === 'production' ? 'Production' : 'Development',
-);
+
 module.exports = sessionMiddleware;

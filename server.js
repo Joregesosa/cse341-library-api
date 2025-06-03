@@ -15,22 +15,22 @@ dbConn(); // Connect to the database
 
 const app = express();
 
-// Configurar CORS antes de cualquier middleware de ruta
+// Configurar CORS ANTES de session middleware
 app
   .use(express.json())
-  .use(require('./middlewares/express-session.middleware'))
-  .use(passport.initialize())
-  .use(passport.session())
   .use(
     cors({
       origin:
         appConfig.env === 'production'
-          ? 'https://cse341-library-api-wlf4.onrender.com' // Cambia esto a tu dominio real
-          : 'http://localhost:3000', // O el origen que uses en desarrollo
-      credentials: true, // CRÍTICO: permite enviar cookies cross-origin
+          ? 'https://cse341-library-api-wlf4.onrender.com'
+          : 'http://localhost:3000',
+      credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     }),
-  );
+  )
+  .use(require('./middlewares/express-session.middleware'))
+  .use(passport.initialize())
+  .use(passport.session());
 
 //app.use(express.urlencoded({ extended: true }));
 
