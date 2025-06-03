@@ -13,7 +13,18 @@ const doc = {
   },
   host: host,
   basePath: '/',
-  schemes: ['http', 'https'],
+  schemes: ['https', 'http'],
+  //oauth github
+  securityDefinitions: {
+    oauth2: {
+      type: 'oauth2',
+      flow: 'implicit',
+      authorizationUrl: 'https://github.com/login/oauth/authorize',
+      scopes: {
+        'user:email': 'Read user email address',
+      },
+    },
+  },
 };
 
 const outputFile = './swagger.json';
