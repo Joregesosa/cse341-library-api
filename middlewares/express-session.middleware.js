@@ -6,10 +6,15 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: appConfig.env === 'production', // Esto requiere HTTPS
+    httpOnly: true, // Añadir esta línea para seguridad
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'lax',
+    sameSite: 'none', // Cambiar a 'none' para permitir cookies en redirecciones cross-origin
+    // domain: '.tudominio.com', // Descomentar y configurar en producción
   },
 });
-
+console.log(
+  'Env:',
+  appConfig.env === 'production' ? 'Production' : 'Development',
+);
 module.exports = sessionMiddleware;

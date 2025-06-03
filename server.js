@@ -21,16 +21,16 @@ app
   .use(require('./middlewares/express-session.middleware'))
   .use(passport.initialize())
   .use(passport.session())
-  .use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // Permitir todas las solicitudes CORS
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    );
-    next();
-  })
-  .use(cors({ methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }))
-  .use(cors({ origin: '*' }));
+  .use(
+    cors({
+      origin:
+        appConfig.env === 'production'
+          ? 'https://cse341-library-api-wlf4.onrender.com' // Cambia esto a tu dominio real
+          : 'http://localhost:3000', // O el origen que uses en desarrollo
+      credentials: true, // CRÍTICO: permite enviar cookies cross-origin
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    }),
+  );
 
 //app.use(express.urlencoded({ extended: true }));
 
