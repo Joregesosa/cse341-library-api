@@ -11,7 +11,7 @@ const {
   generalErrorMiddleware,
 } = require('./middlewares/error.middleware');
 
-dbConn(); // Connect to the database
+dbConn();
 
 const app = express();
 app.set('trust proxy', 1);
@@ -32,8 +32,6 @@ app
   .use(require('./middlewares/express-session.middleware'))
   .use(passport.initialize())
   .use(passport.session());
-
-//app.use(express.urlencoded({ extended: true }));
 
 router(app);
 

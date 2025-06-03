@@ -24,7 +24,6 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        // Buscar usuario existente
         const user = await User.findOne({
           $or: [{ email: profile.emails[0].value }, { githubId: profile.id }],
         });
