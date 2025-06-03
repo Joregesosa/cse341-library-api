@@ -14,6 +14,7 @@ const {
 dbConn(); // Connect to the database
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Configurar CORS ANTES de session middleware
 app

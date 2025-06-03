@@ -53,6 +53,7 @@ const githubLogin = passport.authenticate('github', { scope: ['user:email'] });
 const githubCallback = (req, res, next) => {
   /* #swagger.ignore = true */
   console.log('GitHub callback triggered');
+  console.log('User authenticated with GitHub:', req.user);
   passport.authenticate('github', {
     successRedirect: '/api-docs',
     failureRedirect: '/github/login',

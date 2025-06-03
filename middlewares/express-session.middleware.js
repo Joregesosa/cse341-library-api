@@ -6,16 +6,16 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: appConfig.env === 'production', // Requiere HTTPS
+    secure: appConfig.env === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: appConfig.env === 'production' ? 'none' : 'lax', // 'none' solo en producción
+    sameSite: appConfig.env === 'production' ? 'none' : 'lax',
     domain:
       appConfig.env === 'production'
-        ? 'https://cse341-library-api-wlf4.onrender.com'
-        : undefined, // Ajusta según tu dominio
+        ? 'cse341-library-api-wlf4.onrender.com'
+        : undefined,
   },
-  proxy: appConfig.env === 'production', // Importante si estás detrás de un proxy
+  proxy: appConfig.env === 'production',
 });
 
 module.exports = sessionMiddleware;
